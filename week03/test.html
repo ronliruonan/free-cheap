@@ -1,6 +1,8 @@
 <script>
 
   function convertNumberToString(num, x = 10) {
+    if (typeof num !== 'number') return num;
+
     let integer = Math.floor(num);
     let fraction = String(num).match(/\.\d+$/);
 
@@ -12,11 +14,56 @@
       integer = Math.floor(integer / x);
     }
 
-    return fraction ? str + fraction : str;
+    return fraction ? `${str}.${fraction}` : str;
+  }
+  {
+    console.group();
+    console.log('convertNumberToString');
+    const a = 12.3435;
+    console.log(a, convertNumberToString(a));
+
+    const b = 243.352345;
+    console.log(b, convertNumberToString(b));
+    console.groupEnd();
   }
 
   function convertStringToNumber(str, x = 10) {
-    let ff = /e|E/.test(str);
-    
+    if (typeof str !== 'string') return str;
+
+    const trimStr = str.trim();
+    const arr = str.split('');
+
+    let num = 0;
+    let i = 0;
+    while (i < arr.length && arr[i] !== '.') {
+      const item = arr[i];
+      num = num * x;
+      num = num + item.codePointAt(0) - '0'.codePointAt(0);
+      i++;
+    }
+
+    arr[i] === '.' && i++;
+
+    let decimal = 1;
+    while (i < arr.length) {
+      const item = arr[i];
+      decimal = decimal / x;
+      num = num + (item.codePointAt(0) - '0'.codePointAt(0)) * decimal;
+      i++;
+    }
+
+    return num;
+  }
+
+  {
+    console.group();
+    console.log('convertStringToNumber');
+
+    const a = '123.11';
+    console.log(a, convertStringToNumber(a));
+
+    const b = '123.23';
+    console.log(b, convertStringToNumber(b));
+    console.groupEnd();
   }
 </script>
