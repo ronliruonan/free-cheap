@@ -1,5 +1,18 @@
 # 每周总结可以写在这里
 
+## 类型转换
+
+|           |     Number     |      String      | Boolean  | undefiner | Null  | Object | Symbol |
+| :-------- | :------------: | :--------------: | :------: | :-------: | :---: | :----: | :----: |
+| Number    |       -        |                  | 0 false  |           |       | Boxing |   x    |
+| String    |                |        -         | "" false |           |       | Boxing |   x    |
+| Boolean   | true 1 false 0 |  'true' 'false'  |    -     |           |       | Boxing |   x    |
+| undefiner |      NaN       |   'undefiner'    |  false   |     -     |       |        |   x    |
+| Null      |       0        |      'null'      |  false   |           |   -   |        |   x    |
+| Object    |    valueof     | valueof toString |   true   |           |       |   -    |   x    |
+| Symbol    |       x        |        x         |    x     |     x     |   x   | Boxing |   -    |
+
+
 
 ## 根据课上老师的示范，找出 JavaScript 标准里所有的对象，分析有哪些对象是我们无法实现出来的，这些对象都有哪些特性？
 
