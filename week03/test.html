@@ -1,0 +1,22 @@
+<script>
+
+  function convertNumberToString(num, x = 10) {
+    let integer = Math.floor(num);
+    let fraction = String(num).match(/\.\d+$/);
+
+    fraction && (fraction = fraction[0].replace('.', ''));
+
+    let str = '';
+    while (integer) {
+      str = String(integer % x) + str;
+      integer = Math.floor(integer / x);
+    }
+
+    return fraction ? str + fraction : str;
+  }
+
+  function convertStringToNumber(str, x = 10) {
+    let ff = /e|E/.test(str);
+    
+  }
+</script>
