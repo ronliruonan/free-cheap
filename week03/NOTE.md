@@ -5,4 +5,29 @@
 
 1. Bound Function Exotic Objects
 
-2. 
+`[[Call]]`, 
+`[[Construct]]` 
+
+2. Array Exotic Objects
+
+`[[DefineOwnProperty]]`
+`ArrayCreate(length[,proto])`
+`ArraySpeciesCreate(originalArray,length)` `ArraySetLength(A,Desc)`
+
+3. String Exotic Objects
+
+`[[GetOwnProperty]]` `[[DefineOwnProperty]]` `[[OwnPropertyKeys]]` `StringCreate(value,prototype)` `StringGetOwnProperty(S,P)`
+
+4. Arguments Exotic Objects
+
+`[[GetOwnProperty]]` `[[DefineOwnProperty]]` `[[Get]]` `[[Set]]` `[[Delete]]` 
+
+5. Integer-Indexed Exotic Objects
+
+`[[GetOwnProperty]]` `[[HasProperty]]` `[[DefineOwnProperty]]` `[[Get]]` `[[Set]]` `[[OwnPropertyKeys]]`
+
+6. Module Namespace Exotic Objects
+有这些特性[[SetPrototypeOf]] [[IsExtensible]] [[PreventExtensions]] [[GetOwnProperty]] [[DefineOwnProperty]] [[HasProperty]] [[Get]] [[Set]] [[Delete]] [[OwnPropertyKeys]] ModuleNamespaceCreate(module,exports)
+
+7. Immutable Prototype Exotic Objects
+有这些特性[[SetPrototypeOf]] SetImmutablePrototype
