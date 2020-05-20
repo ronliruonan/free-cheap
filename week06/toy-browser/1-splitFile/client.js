@@ -245,3 +245,67 @@ void async function () {
 
   let dom = parser.parseHTML(response.body);
 }();
+
+
+/*
+const client = net.createConnection({
+  host: '127.0.0.1',
+  port: 8088,
+}, () => {
+  // 'connect' listener
+  console.log('1---> connected to server!');
+
+  let request = new Request({
+    method: 'POST',
+    host: '127.0.0.1',
+    port: 8088,
+    path: '/',
+    headers: {
+      ['X-Foo2']: "customed"
+    },
+    body: {
+      name: 'Ronan'
+    }
+  });
+
+  console.log(request.toString());
+  client.write(request.toString());
+  // client.write("POST / HTTP/1.1\r\nContent-Type: application/x-www-form-urlencoded\r\nContent-Length: 11\r\n\r\nname=ronan");
+
+  // client.write(`
+  // POST / HTTP/1.1\r
+  // Content-Type: application/x-www-form-urlencoded\r
+  // Content-Length: 11\r
+  // \r
+  // name=ronan`);
+
+});
+
+client.on('data', (data) => {
+  console.log('2--->', data.toString());
+
+  client.end();
+});
+
+client.on('end', () => {
+  console.log('3---> disconnected from server');
+});
+
+client.on('error', (err) => {
+  console.log('4--->error:', err);
+})
+
+// net.connect({
+//   // localAddress: 'localhost',
+//   // address: 'localhost',
+//   host: '127.0.0.1',
+//   port: 8088,
+//   onread: {
+//     // reuses a 4kib Buffer for every read from the socket
+//     buffer: Buffer.alloc(4 * 1024),
+//     callback: function (nread, buf) {
+//       // Received data is available in `buf` from 0 to `nread`
+//       console.log(buf.toString('utf8', 0, nread));
+//     },
+//   },
+// });*/
