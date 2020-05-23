@@ -1,15 +1,4 @@
-# 每周总结可以写在这里
-
-
-
-
-
-
-
-
-
-
-[
+let standards = [
 	{
 		"name": "Requirements for Chinese Text Layout中文排版需求",
 		"url": "https://www.w3.org/TR/2020/WD-clreq-20200521/"
@@ -562,32 +551,29 @@
 		"name": "List of suggested extensions to CSS",
 		"url": "http://www.w3.org/TR/1998/NOTE-CSS-potential-19981210"
 	}
-]
+];
 
+let iframe = document.createElement('iframe');
 
-## from Winter
-```js
-let iframe = document.createElement("iframe");
-document.body.innerHTML = "";
+document.body.innerHTML = '';
 document.body.appendChild(iframe);
 
-
-function happen(element, event){
-    return new Promise(function(resolve){
-        let handler = () => {
-            resolve();
-            element.removeEventListener(event, handler);
-        }
-        element.addEventListener(event, handler);
-    })
+function happen (element, event) {
+  return new Promise((resolve) => {
+    let handler = () => {
+      resolve();
+      element.removeEventListener(event, handler);
+    }
+    element.addEventListener(event, handler);
+  })
 }
 
+iframe.src='https://www.w3.org/TR/2020/WD-css-position-3-20200519/';
 
-void async function(){
-    for(let standard of standards) {
-        iframe.src = standard.url;
-        console.log(standard.name);
-        await happen(iframe, "load");
-    }
+void async function () {
+  for (let standard of standards) {
+    iframe.src = standard.url;
+    console.log(standard.name);
+    await happen(iframe, 'load');
+  }
 }();
-```
