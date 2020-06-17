@@ -1,0 +1,128 @@
+<style>
+  .item {
+    width: 100px;
+    height: 100px;
+    border: 1px solid #fff;
+    background-color: turquoise;
+    display: inline-block;
+    vertical-align: middle;
+
+    font-size: 50px;
+    text-align: center;
+    line-height: 100px;
+  }
+</style>
+<div id="board"></div>
+
+<script>
+  // 数据结构：二维数组
+  // 数据标识：0 1 2
+  const pattern = [
+    [1, 0, 0,],
+    [0, 0, 0,],
+    [0, 2, 0,],
+  ];
+
+  let color = 1;
+
+  function show() {
+    const eleBoard = document.getElementById('board');
+    eleBoard.innerHTML = '';
+
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        const eleItem = document.createElement('div');
+        eleItem.classList.add('item');
+        eleItem.innerHTML =
+          pattern[i][j] === 2 ? 'X' :
+            pattern[i][j] === 1 ? 'O' : '';
+
+
+        eleItem.addEventListener('click', () => move(j, i));
+        eleBoard.appendChild(eleItem);
+      }
+      eleBoard.appendChild(document.createElement('br'));
+    }
+  }
+
+  function move(x, y) {
+    if (pattern[y][x] !== 0) return;
+    pattern[y][x] = color;
+    console.log('after：', JSON.stringify(pattern));
+
+    if (check(pattern, color, x, y)) {
+      console.warn(color === 2 ? 'X' : 'O', 'is winer');
+    }
+
+    color = 3 - color;
+    show();
+  }
+
+  // 怎么算赢了
+  // 当前color 3纵3横2斜都相等
+  function check(pattern, color, x, y) {
+    // x y X斜线坐标，1横1纵1斜 x === y || x + y === 2
+    if (x === y || x + y === 2) {
+      // // 1横1纵
+      // let win = true;
+      // for (let i = 0; i < 3; i++) {
+      //   const valX = pattern[i][x];
+      //   const valY = pattern[y][i];
+      //   if (valX === color | valY === color)
+      //     continue;
+      //   win = false;
+      // }
+      // if (win)
+      //   return true;
+      // 1斜
+      let win = true;
+      for (let i = 0; i < 3; i++) {
+        if (pattern[i][i] === color)
+          continue;
+        win = false;
+      }
+      if (win)
+        return true;
+
+      {
+        let win = true;
+        for (let i = 0; i < 3; i++) {
+          if (pattern[i][2 - i] === color)
+            continue;
+          win = false;
+        }
+        if (win)
+          return true;
+      }
+    }
+    // x y +字线坐标，1横1纵 | x -y | === 1
+    // if (Math.abs(x - y) === 1) {
+    {
+      let win = true;
+      for (let i = 0; i < 3; i++) {
+        const valX = pattern[i][x];
+        if (valX === color)
+          continue;
+        win = false;
+      }
+      if (win)
+        return true;
+    }
+    // }
+    {
+      let win = true;
+      for (let i = 0; i < 3; i++) {
+        const valY = pattern[y][i];
+        if (valY === color)
+          continue;
+        win = false;
+      }
+      if (win)
+        return true;
+    }
+
+    return false;
+  }
+
+  show();
+</script>

@@ -1,0 +1,57 @@
+<style>
+  .cell {
+    width: 100px;
+    height: 100px;
+    border: 1px solid #fff;
+    background-color: turquoise;
+    display: inline-block;
+    vertical-align: middle;
+
+    font-size: 50px;
+    text-align: center;
+    line-height: 100px;
+  }
+</style>
+二维数组
+<div id="board"></div>
+
+<script>
+  // 二维数组 3种状态
+  let pattern = [
+    [2, 0, 0],
+    [0, 1, 0],
+    [0, 0, 0],
+  ];
+
+  let color = 1;
+
+  function show(pattern) {
+    const eleBoard = document.getElementById('board');
+    eleBoard.innerHTML = '';
+
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        const eleCell = document.createElement('div');
+        eleCell.classList.add('cell');
+        eleCell.innerHTML =
+          pattern[i][j] === 2 ? 'X' :
+            pattern[i][j] === 1 ? 'O' :
+              '';
+
+        eleCell.addEventListener('click', () => move(j, i));
+        eleBoard.appendChild(eleCell);
+      }
+
+      eleBoard.appendChild(document.createElement('br'));
+    }
+  }
+
+  function move(x, y) {
+    if (pattern[y][x] !== 0) return;
+
+    pattern[y][x] = color;
+    color = 3 - color;
+    show(pattern);
+  }
+  show(pattern);
+</script>

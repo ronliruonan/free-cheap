@@ -1,0 +1,43 @@
+<style>
+  .item {
+    width: 100px;
+    height: 100px;
+    border: 1px solid #fff;
+    background-color: turquoise;
+    display: inline-block;
+    vertical-align: middle;
+
+    font-size: 50px;
+    text-align: center;
+    line-height: 100px;
+  }
+</style>
+<div id="board"></div>
+
+<script>
+  // 数据结构：二维数组
+  // 数据标识：0 1 2
+  const pattern = [
+    [1, 0, 0,],
+    [0, 0, 0,],
+    [0, 2, 0,],
+  ];
+
+  function show() {
+    const eleBoard = document.getElementById('board');
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        const eleItem = document.createElement('div');
+        eleItem.classList.add('item');
+        eleItem.innerHTML =
+            pattern[i][j] === 2 ? 'X' :
+            pattern[i][j] === 1 ? 'O' : '';
+
+        eleBoard.appendChild(eleItem);
+      }
+      eleBoard.appendChild(document.createElement('br'));
+    }
+  }
+
+  show();
+</script>

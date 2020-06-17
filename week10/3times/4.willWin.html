@@ -1,0 +1,138 @@
+<style>
+  .cell {
+    width: 100px;
+    height: 100px;
+    border: 1px solid #fff;
+    background-color: turquoise;
+    display: inline-block;
+    vertical-align: middle;
+
+    font-size: 50px;
+    text-align: center;
+    line-height: 100px;
+  }
+</style>
+二维数组
+<div id="board"></div>
+
+<script>
+  // 二维数组 3种状态
+  let pattern = [
+    [1, 2, 0],
+    [0, 1, 0],
+    [0, 0, 0],
+  ];
+
+  let color = 1;
+
+  function show(pattern) {
+    const eleBoard = document.getElementById('board');
+    eleBoard.innerHTML = '';
+
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        const eleCell = document.createElement('div');
+        eleCell.classList.add('cell');
+        eleCell.innerHTML =
+          pattern[i][j] === 2 ? 'X' :
+            pattern[i][j] === 1 ? 'O' :
+              '';
+
+        eleCell.addEventListener('click', () => move(j, i));
+        eleBoard.appendChild(eleCell);
+      }
+
+      eleBoard.appendChild(document.createElement('br'));
+    }
+  }
+
+  function move(x, y) {
+    if (pattern[y][x] !== 0) return;
+
+    pattern[y][x] = color;
+    if (check(pattern, color)) {
+      alert(color === 2 ? 'X' : 'O' + ' is winer');
+    }
+    color = 3 - color;
+    show(pattern);
+
+    if(willWin(pattern, color)){
+      console.log(color === 2 ? 'X' : 'O' + ' will win');
+    }
+  }
+
+  // 可抽象，optional
+  function check(pattern, color) {
+    for (let i = 0; i < 3; i++) {
+      let win = true; // 一排
+      for (let j = 0; j < 3; j++) {
+        if (pattern[i][j] !== color) {
+          win = false;
+          break;
+        }
+      }
+      if (win)
+        return true;
+    }
+
+    for (let i = 0; i < 3; i++) {
+      let win = true; // 一纵
+      for (let j = 0; j < 3; j++) {
+        if (pattern[j][i] !== color) {
+          win = false;
+          break;
+        }
+      }
+      if (win)
+        return true;
+    }
+
+    {
+      let win = true;
+      for (let j = 0; j < 3; j++) {
+        if (pattern[j][j] !== color) {
+          win = false;
+          break;
+        }
+      }
+      if (win)
+        return true;
+    }
+
+    {
+      let win = true;
+      for (let j = 0; j < 3; j++) {
+        if (pattern[j][2 - j] !== color) {
+          win = false;
+          break;
+        }
+      }
+      if (win)
+        return true;
+    }
+
+    return false;
+  }
+
+  function clone(pattern) {
+    return JSON.parse(JSON.stringify(pattern));
+  }
+
+  // 遍历空穴，利用已有check
+  function willWin(pattern, color) {
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        if (pattern[i][j] !== 0)
+          continue;
+
+        let temp = clone(pattern);
+        temp[i][j] = color;
+        if(check(temp, color)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+  show(pattern);
+</script>
