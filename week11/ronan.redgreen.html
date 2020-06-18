@@ -1,0 +1,59 @@
+<style>
+  .item {
+    width: 100px;
+    height: 100px;
+    border-radius: 100px;
+
+    background-color: #e3e3e3;
+    border:1px solid #000;
+  }
+  .red {
+    background-color: red !important;
+  }
+  .yellow {
+    background-color: yellow !important;
+  }
+  .green {
+    background-color: green !important;
+  }
+</style>
+<div id="red" class="item"></div>
+<div id="yellow" class="item"></div>
+<div id="green" class="item"></div>
+
+<script>
+  const eleRed = document.getElementById('red');
+  const eleYellow = document.getElementById('yellow');
+  const eleGreen = document.getElementById('green');
+
+  let status = 0;
+
+  function sleep(delay) {
+    return new Promise(resolve => {
+      setTimeout(() => resolve(), delay * 1000);
+    });
+  }
+
+
+  function clear () {
+    eleRed.classList.remove('red')
+    eleYellow.classList.remove('yellow')
+    eleGreen.classList.remove('green')
+  }
+  async function go() {
+    clear();
+    eleRed.classList.add('red');
+
+    await sleep(5);
+    clear();
+    eleYellow.classList.add('yellow');
+
+    await sleep(2);
+    clear();
+    eleGreen.classList.add('green');
+
+    await sleep(10);
+    go();
+  }
+  go();
+</script>
