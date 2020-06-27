@@ -1,0 +1,32 @@
+<script>
+  function parse(source) {
+    let stack = [];
+    for (let c of source) {
+      if (['(', '{', '['].indexOf(c) > -1) {
+        stack.push(c);
+      }
+
+      if ([')'].indexOf(c) > -1) {
+        if (stack[stack.length - 1] === '(')
+          stack.pop();
+        else
+          return false;
+      }
+
+      if (['}'].indexOf(c) > -1) {
+        if (stack[stack.length - 1] === '{')
+          stack.pop();
+        else
+          return false;
+      }
+
+      if ([']'].indexOf(c) > -1) {
+        if (stack[stack.length - 1] === '[')
+          stack.pop();
+        else
+          return false;
+      }
+    }
+    return stack.length === 0;
+  }
+</script>

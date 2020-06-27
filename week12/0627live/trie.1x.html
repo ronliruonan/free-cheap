@@ -1,0 +1,83 @@
+字典数
+<script>
+  class Trie {
+    constructor() {
+      this.root = Object.create(null); // 
+      // this.root = new Map(); // Map 存值比较紧凑，可以使用Map实现一遍
+    }
+
+
+    insert(word) {
+      let node = this.root;
+      for (let c of word) {
+        if (!node[c])
+          node[c] = Object.create(null);
+        node = node[c];
+      }
+      // 'ca' // ca$  隐藏$ 结束的$符号，老师之前讲过
+      // 'cad' // cad$
+      // 为什么是1， 2个'ca'出来的话，计数
+      if (!('$' in node))
+        node['$'] = 0;
+
+      node['$']++;
+    }
+
+    // 怎么找到出现最多的，必须要访问的$节点
+    most() {
+      let max = 0;
+      let maxWord = null;
+      let visit = (node, word) => {
+        if (node.$ && node.$ > max) {
+          max = node.$;
+          maxWord = word;
+        }
+        for (let p in node) {
+          visit(node[p], word + p);
+        }
+      }
+
+      visit(this.root, '');
+      console.log(maxWord);
+    }
+
+    maxTop2() {
+      let maxs = [0, 0];
+      let maxWorkds = [null, null];
+      let visit = (node, word) => {
+        if (node.$) {
+          if (node.$ > maxs[0]) {
+            maxs[0] = node.$;
+            maxWorkds[0] = word;
+          } else if (node.$ > maxs[1]) {
+            maxs[1] = node.$;
+            maxWorkds[1] = word;
+          }
+        }
+
+        for (let p in node) {
+          visit(node[p], word + p);
+        }
+      }
+
+      visit(this.root, '');
+      console.log(maxs);
+      console.log(maxWorkds)
+    }
+  }
+
+  function randomWord(length) {
+    var s = '';
+    for (let i = 0; i < length; i++) {
+      s += String.fromCharCode(Math.random() * 26 + 'a'.charCodeAt(0)); // 随机字符
+    }
+    return s;
+  }
+
+  let trie = new Trie();
+  for (let i = 0; i < 10000; i++) {
+    trie.insert(randomWord(4));
+  }
+
+  // 挑战2: 前top2, 寻路算法
+</script>
