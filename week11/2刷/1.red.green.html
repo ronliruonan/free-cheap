@@ -1,0 +1,107 @@
+
+<style>
+  .light {
+    width: 200px;
+    height: 200px;
+    border-radius: 100px;
+
+    background: bisque;
+  }
+  .light.red {
+    background: red;;
+  }
+  .light.yellow {
+    background: yellow;;
+  }
+  .light.green {
+    background: green;;
+  }
+</style>
+
+// 绿灯10s  黄灯2s  红灯5s
+<div id="red" class="light"></div>
+<div id="yellow" class="light"></div>
+<div id="green" class="light"></div>
+
+<button id="next"> 手动 </button>
+
+<script>
+  function sleep(delay) {
+    return new Promise(resolve => {
+      setTimeout(resolve, 1000 * delay);
+    });
+  }
+
+  // function red(){
+  //   const eles = document.querySelectorAll('.light');
+  //   eles.forEach(ele => {
+  //     ele.classList.remove('red');
+  //     ele.classList.remove('yellow');
+  //     ele.classList.remove('green');
+  //   });
+
+  //   const redLight = document.getElementById('red');
+  //   redLight.classList.add('red');
+  // }
+
+  // function yellow() {
+  //   const eles = document.querySelectorAll('.light');
+  //   eles.forEach(ele => {
+  //     ele.classList.remove('red');
+  //     ele.classList.remove('yellow');
+  //     ele.classList.remove('green');
+  //   });
+
+  //   const redLight = document.getElementById('yellow');
+  //   redLight.classList.add('yellow');
+  // }
+
+  // function green(){
+  //   const eles = document.querySelectorAll('.light');
+  //   eles.forEach(ele => {
+  //     ele.classList.remove('red');
+  //     ele.classList.remove('yellow');
+  //     ele.classList.remove('green');
+  //   });
+
+  //   const redLight = document.getElementById('green');
+  //   redLight.classList.add('green');
+  // }
+
+   function whichLigth(light){
+    const eles = document.querySelectorAll('.light');
+    eles.forEach(ele => {
+      ele.classList.remove('red');
+      ele.classList.remove('yellow');
+      ele.classList.remove('green');
+    });
+
+    const redLight = document.getElementById(light);
+    redLight.classList.add(light);
+  }
+
+  function happen(element, eventName) {
+    return new Promise((resolve, reject) => {
+      element.addEventListener(eventName, resolve, {once: true});
+    });
+  }
+
+  async function go() {
+    // red();
+    whichLigth('red');
+    // await sleep(5);
+    await happen(document.getElementById('next'), 'click');
+
+    // yellow();
+    whichLigth('yellow');
+    // await sleep(2);
+    await happen(document.getElementById('next'), 'click');
+
+    // green();
+    whichLigth('green');
+    await sleep(10);
+    
+    go();
+  }
+  go();
+</script>
