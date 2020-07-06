@@ -1,0 +1,82 @@
+<input type="range" id="r" min=0 max=255>
+<input type="range" id="g" min=0 max=255>
+<input type="range" id="b" min=0 max=255>
+
+<div id="color" style="width:100px; height:100px;"></div>
+
+<script>
+  let handlers = new Map;
+  let useReactivities = [];
+  let obj = {
+    r: 100,
+    g: 100,
+    b: 100
+  };
+  // reactive
+  function reactive(target) {
+    const proxy = new Proxy(target, {
+      get(target, prop) {
+        useReactivities.push([target, prop]);
+        return target[prop];
+      },
+      set(target, prop, value) {
+        target[prop] = value;
+        if (handlers.has(target))
+          if (handlers.get(target).has(prop))
+            for (let handler of handlers.get(target).get(prop))
+              handler();
+        return target[prop];
+      }
+    });
+
+    return proxy;
+  }
+  // effect
+  function effect(handler) {
+    useReactivities = [];
+    handler();
+    for (let useReactive of useReactivities) {
+      let [target, prop] = useReactive;
+      if (!handlers.has(target))
+        handlers.set(target, new Map);
+      if (!handlers.get(target).has(prop))
+        handlers.get(target).set(prop, [])
+
+      handlers.get(target).get(prop).push(handler);
+    }
+  }
+  let proxy = reactive(obj);
+  let dummy;
+  effect(() => dummy = proxy.r);
+  proxy.r = 101;
+  console.log('dummy', dummy);
+
+  let dummy2;
+  effect(() => dummy2 = proxy.r);
+  proxy.r = 202;
+  console.log('dummy2', dummy2);
+
+  effect(() => {
+    document.getElementById('r').value = proxy.r;
+  })
+  effect(() => {
+    document.getElementById('g').value = proxy.g;
+  })
+  effect(() => {
+    document.getElementById('b').value = proxy.b;
+  })
+  document.getElementById('r').addEventListener('input',event => {
+    proxy.r = event.target.value;
+  })
+  document.getElementById('g').addEventListener('input',event => {
+    proxy.g = event.target.value;
+  })
+  document.getElementById('b').addEventListener('input',event => {
+    proxy.b = event.target.value;
+  })
+
+  effect(() => {
+    document.getElementById('color').style.backgroundColor = `rgb(${proxy.r},${proxy.g},${proxy.b})`;
+  });
+
+</script>
