@@ -1,0 +1,83 @@
+<div id="container">
+  文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字
+  文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字
+</div>
+<div id="dragable" style="width:100px;height:100px; background-color:aqua; display:inline-block;"></div>
+
+<script>
+  let dragable = document.getElementById('dragable');
+
+  let baseX = 0, baseY = 0;
+
+  // // 应该监听document，因为鼠标会出外边
+  // dragable.addEventListener('mousedown', () => {
+  // })
+  // dragable.addEventListener('mousemove', () => {
+  // })
+  // dragable.addEventListener('mouseup', () => {
+  // })
+
+  dragable.addEventListener('mousedown', (event) => {
+    let dd = event => event.preventDefault();
+    document.addEventListener('selectstart', dd);
+
+    let startX = event.clientX, startY = event.clientY;
+
+    let move = event => {
+      // // event.clientX  event.clientY // 无歧义的可视化范围的坐标
+      // let x = baseX + event.clientX - startX, y = baseY + event.clientY - startY;
+      // dragable.style.transform = `translate(${x}px,${y}px)`;
+
+      let range = nearest(event.clientX, event.clientY);
+      range.insertNode(dragable);
+
+    };
+    let up = event => {
+      baseX = baseX + event.clientX - startX, baseY = baseY + event.clientY - startY;
+      // document监听特点，及时鼠标离开浏览器也会触发
+      // 记得释放
+      document.removeEventListener('mousemove', move);
+      document.removeEventListener('mouseup', up);
+      document.removeEventListener('selectstart', dd);
+    };
+
+    document.addEventListener('mousemove', move);
+    document.addEventListener('mouseup', up);
+  })
+
+  let ranges = [];
+  let container = document.getElementById('container');
+  for (let i = 0; i < container.childNodes[0].textContent.length; i++) {
+    let range = document.createRange();
+    range.setStart(container.childNodes[0], i);
+    range.setEnd(container.childNodes[0], i);
+    ranges.push(range);
+  }
+
+  function nearest(x0, y0) {
+    // 找出距离鼠标最近的位置
+    let nearestRange = null;
+    let distance = Infinity;
+    for (let range of ranges) {
+      let { x, y } = range.getBoundingClientRect();
+      let d = (x0 - x) ** 2 + (y0 - y) ** 2;
+
+      if (d < distance) {
+        nearestRange = range;
+        distance = d;
+      }
+    }
+    return nearestRange;
+  }
+
+</script>
