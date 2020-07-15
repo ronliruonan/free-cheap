@@ -1,0 +1,116 @@
+<html>
+
+<head>
+  <title>carousel component</title>
+  <style>
+    .carousel {
+      width: 500px;
+      height: 300px;
+      white-space: nowrap;
+      outline: solid 1px blue;
+      overflow: hidden;
+    }
+
+    .carousel>img {
+      width: 500px;
+      height: 300px;
+      display: inline-block;
+
+      /* 调优 */
+      transition: transform ease 7s;
+
+    }
+  </style>
+</head>
+
+<body>
+  <div id="container"></div>
+  <script>
+    class Carousel {
+      constructor() {
+        this.root = null;
+        this.data = null;
+      }
+      render() {
+        this.root = document.createElement("div");
+        this.root.classList.add('carousel');
+
+        for (let d of this.data) {
+          let element = document.createElement('img');
+          element.src = d;
+          this.root.appendChild(element);
+        }
+
+        let position = 0;
+
+        let nextPic = () => {
+          let nextPosition = (position + 1) % this.data.length;
+
+          let current = this.root.childNodes[position];
+          let next = this.root.childNodes[nextPosition];
+
+          current.style.transition = 'ease 0s';
+          next.style.transition = 'ease 0s';
+
+          current.style.transform = `translateX(${- 100 * position}%)`;
+          next.style.transform = `translateX(${100 - 100 * nextPosition}%)`;
+
+          setTimeout(function () {
+            current.style.transition = ''; // 用css控制
+            next.style.transition = '';
+
+            current.style.transform = `translateX(${- 100 - 100 * position}%)`;
+            next.style.transform = `translateX(${- 100 * nextPosition}%)`;
+
+            position = nextPosition;
+
+          }, 16)
+
+          setTimeout(nextPic, 1000 * 2);
+        }
+        setTimeout(nextPic, 1000 * 2);
+
+        this.root.addEventListener('mousedown', event => {
+          let startX = event.clientX, startY = event.clientY;
+
+          let lastPosition = (position - 1 + this.data.length) % this.data.length;
+          let nextPosition = (position + 1) % this.data.length;
+
+          let current = this.root.childNodes[position];
+          let last = this.root.childNodes[lastPosition];
+          let next = this.root.childNodes[nextPosition];
+
+          current.style.transition = 'ease 0s';
+          last.style.transition = 'ease 0s';
+          next.style.transition = 'ease 0s';
+
+          current.style.transform = `translateX(${-500 * position}px)`;
+          last.style.transform = `translateX(${-500 - 500 * lastPosition}px)`;
+          next.style.transform = `translateX(${500 - 500 * nextPosition}px)`;
+        })
+      }
+    }
+
+
+    //create
+    let carousel = new Carousel();
+
+    //update
+    carousel.data = [
+      "https://static001.geekbang.org/resource/image/bb/21/bb38fb7c1073eaee1755f81131f11d21.jpg",
+      "https://static001.geekbang.org/resource/image/1b/21/1b809d9a2bdf3ecc481322d7c9223c21.jpg",
+      "https://static001.geekbang.org/resource/image/b6/4f/b6d65b2f12646a9fd6b8cb2b020d754f.jpg",
+      "https://static001.geekbang.org/resource/image/73/e4/730ea9c393def7975deceb48b3eb6fe4.jpg",
+    ];
+    carousel.render();
+
+    //mount
+    document.getElementById("container").appendChild(carousel.root);
+
+
+
+  </script>
+</body>
+
+
+</html>
