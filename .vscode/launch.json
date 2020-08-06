@@ -11,7 +11,7 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${workspaceFolder}\\week12\\toy-browser\\5-attribute\\client.js"
+      "program": "${workspaceFolder}\\week18\\0806live\\tools\\run-vue.js"
     }
   ]
 }
