@@ -18,24 +18,24 @@ function end(c) {
 
 function foundA(c) {
   if (c === 'b') return foundBc;
-  return start;
+  return start(c);
 }
 function foundBc(c) {
   if (c === 'c') return foundA2;
-  return start;
+  return start(c);
 }
 
 function foundA2(c) {
   if (c === 'a') return foundB2;
-  return start;
+  return start(c);
 }
 function foundB2(c) {
   if (c === 'b') return foundX;
-  return start;
+  return start(c);
 }
 function foundX(c) {
   if (c === 'x') return end;
-  return start;
+  return start(c);
 }
 
 function log(key, desc) {
@@ -43,5 +43,10 @@ function log(key, desc) {
 }
 {
   let string = 'abcabx';
+  log(string, match(string))
+}
+
+{
+  let string = 'ababcabx';
   log(string, match(string))
 }
