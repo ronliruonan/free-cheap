@@ -41,12 +41,18 @@ function foundX(c) {
 function log(key, desc) {
   console.log(`${key}: ${desc}`)
 }
+
 {
   let string = 'abcabx';
   log(string, match(string))
 }
 
 {
-  let string = 'ababcabx';
+  let string = 'abccccabcabx';
+  log(string, match(string))
+}
+
+{
+  let string = 'abcabcabx';
   log(string, match(string))
 }
