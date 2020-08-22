@@ -1,9 +1,23 @@
+
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+const fs = require('fs');
+
+// /* GET home page. */
+// router.all('/', function(req, res, next) {
+//   let path = '../server/public/' + req.query.filename;
+//   fs.writeFileSync(path, req.body.content);
+
+//   res.send();
+//   res.end();
+// });
+
+router.post('/', (req, res, next) => {
+  req.pipe(fs.createWriteStream('../server/public/' + req.query.filename));
+  req.on('end', () => {
+    res.end();
+  });
+})
 
 module.exports = router;
