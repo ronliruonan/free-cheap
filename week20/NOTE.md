@@ -2,4 +2,4 @@
 
 https://developer.github.com/v3/
 
-用promise搞一下
+挑战作业：用promise搞一下
